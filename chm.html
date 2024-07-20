@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChemBalance Master</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3F51B5;
+            --primary-light: #C5CAE9;
+            --primary-dark: #303F9F;
+            --accent-color: #FF4081;
+            --background-color: #E8EAF6;
+            --text-color: #212121;
+            --text-light: #FFFFFF;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            max-width: 800px;
+            width: 90%;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .equation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+            font-size: 1.5rem;
+        }
+
+        input {
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 0 0.5rem;
+            border: none;
+            border-bottom: 2px solid var(--primary-color);
+            background-color: rgba(197, 202, 233, 0.3);
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-bottom: 2px solid var(--accent-color);
+            box-shadow: 0 1px 0 0 var(--accent-color);
+        }
+
+        button {
+            display: block;
+            margin: 1rem auto;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+
+        #result {
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: 500;
+            min-height: 1.5em;
+            transition: all 0.3s;
+        }
+
+        #menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #menu button {
+            margin: 0.5rem;
+            width: 200px;
+        }
+
+        #about {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(63, 81, 181, 0.9);
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+
+        .score-board div {
+            font-weight: 500;
+        }
+
+        #menuButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--accent-color);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .equation {
+                font-size: 1.2rem;
+            }
+
+            input {
+                width: 30px;
+                height: 30px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ChemBalance Master</h1>
+        <div id="menu" class="fade-in">
+            <button onclick="startGame()" class="slide-in">Play</button>
+            <button onclick="showAbout()" class="slide-in">About</button>
+            <button onclick="quitGame()" class="slide-in">Quit</button>
+        </div>
+        <div id="gameArea" style="display:none;">
+            <button id="menuButton" onclick="showMenu()">Menu</button>
+            <div class="score-board slide-in">
+                <div id="level">Level: 1</div>
+                <div id="score">Score: 0</div>
+            </div>
+            <div class="equation" id="equationContainer"></div>
+            <button onclick="checkBalance()">Check Balance</button>
+            <div id="result"></div>
+        </div>
+        <div id="about" style="display:none;">
+            <p>Balance chemical equations and become a ChemBalance Master!</p>
+            <p>Created by Anyanwu Kelechi Francis</p>
+            <button onclick="showMenu()">Back to Menu</button>
+        </div>
+    </div>
+
+    <script>
+        const equations = [
+            { reactants: ['H₂', 'O₂'], products: ['H₂O'], coefficients: [2, 1, 2] },
+            { reactants: ['N₂', 'H₂'], products: ['NH₃'], coefficients: [1, 3, 2] },
+            { reactants: ['CH₄', 'O₂'], products: ['CO₂', 'H₂O'], coefficients: [1, 2, 1, 2] },
+            { reactants: ['C₃H₈', 'O₂'], products: ['CO₂', 'H₂O'], coefficients: [1, 5, 3, 4] },
+            { reactants: ['Fe', 'O₂'], products: ['Fe₂O₃'], coefficients: [4, 3, 2] },
+            { reactants: ['Al', 'HCl'], products: ['AlCl₃', 'H₂'], coefficients: [2, 6, 2, 3] },
+            { reactants: ['NaHCO₃', 'HCl'], products: ['NaCl', 'H₂O', 'CO₂'], coefficients: [1, 1, 1, 1, 1] },
+            { reactants: ['C₆H₁₂O₆'], products: ['C₂H₅OH', 'CO₂'], coefficients: [1, 2, 2] },
+            { reactants: ['KClO₃'], products: ['KCl', 'O₂'], coefficients: [2, 2, 3] },
+            { reactants: ['Cu', 'HNO₃'], products: ['Cu(NO₃)₂', 'NO', 'H₂O'], coefficients: [3, 8, 3, 2, 4] },
+            { reactants: ['C₆H₁₂O₆', 'O₂'], products: ['CO₂', 'H₂O'], coefficients: [1, 6, 6, 6] },
+            { reactants: ['Fe₂O₃', 'CO'], products: ['Fe', 'CO₂'], coefficients: [1, 3, 2, 3] },
+            { reactants: ['SiCl₄', 'H₂O'], products: ['Si(OH)₄', 'HCl'], coefficients: [1, 4, 1, 4] },
+            { reactants: ['Na₂CO₃', 'HCl'], products: ['NaCl', 'H₂O', 'CO₂'], coefficients: [1, 2, 2, 1, 1] },
+            { reactants: ['KMnO₄', 'HCl'], products: ['KCl', 'MnCl₂', 'H₂O', 'Cl₂'], coefficients: [2, 16, 2, 2, 8, 5] }
+        ];
+
+        let currentLevel = 1;
+        let score = 0;
+        let currentEquation = {};
+
+        const $ = (id) => document.getElementById(id);
+
+        const loadGame = () => {
+            currentLevel = parseInt(localStorage.getItem('level')) || 1;
+            score = parseInt(localStorage.getItem('score')) || 0;
+            updateDisplay();
+        };
+
+        const saveGame = () => {
+            localStorage.setItem('level', currentLevel);
+            localStorage.setItem('score', score);
+        };
+
+        const updateDisplay = () => {
+            $('level').textContent = `Level: ${currentLevel}`;
+            $('score').textContent = `Score: ${score}`;
+        };
+
+        const generateEquation = () => {
+            currentEquation = equations[Math.floor(Math.random() * equations.length)];
+            const container = $('equationContainer');
+            container.innerHTML = '';
+
+            const appendElement = (element) => container.appendChild(element);
+
+            const createInput = () => {
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.min = '1';
+                input.max = '9';
+                input.classList.add('slide-in');
+                return input;
+            };
+
+            const createText = (text) => {
+                const span = document.createElement('span');
+                span.textContent = text;
+                span.classList.add('slide-in');
+                return span;
+            };
+
+            currentEquation.reactants.forEach((reactant, index) => {
+                if (index > 0) appendElement(createText(' + '));
+                appendElement(createInput());
+                appendElement(createText(' ' + reactant));
+            });
+
+            appendElement(createText(' → '));
+
+            currentEquation.products.forEach((product, index) => {
+                if (index > 0) appendElement(createText(' + '));
+                appendElement(createInput());
+                appendElement(createText(' ' + product));
+            });
+        };
+
+        const checkBalance = () => {
+            const inputs = document.querySelectorAll('input');
+            const userCoefficients = Array.from(inputs).map(input => parseInt(input.value));
+            const result = $('result');
+
+            if (JSON.stringify(userCoefficients) === JSON.stringify(currentEquation.coefficients)) {
+                result.textContent = "Correct! Moving to the next level.";
+                result.style.color = "#4CAF50";
+                score += 10;
+                currentLevel++;
+                updateDisplay();
+                saveGame();
+                setTimeout(() => {
+                    generateEquation();
+                    result.textContent = "";
+                }, 1500);
+            } else {
+                result.textContent = "Incorrect. Try again!";
+                result.style.color = "#F44336";
+                score = Math.max(0, score - 5);
+                updateDisplay();
+                saveGame();
+            }
+        };
+
+        const startGame = () => {
+            $('menu').style.display = 'none';
+            $('gameArea').style.display = 'block';
+            $('about').style.display = 'none';
+            $('gameArea').classList.add('fade-in');
+            loadGame();
+            generateEquation();
+        };
+
+        const showAbout = () => {
+            $('menu').style.display = 'none';
+            $('gameArea').style.display = 'none';
+            $('about').style.display = 'block';
+            $('about').classList.add('fade-in');
+        };
+
+        const showMenu = () => {
+            $('menu').style.display = 'flex';
+            $('gameArea').style.display = 'none';
+            $('about').style.display = 'none';
+            $('menu').classList.add('fade-in');
+        };
+
+        const quitGame = () => {
+            if (confirm("Are you sure you want to quit? Your progress will be saved.")) {
+                saveGame();
+                window.close();
+            }
+        };
+
+        showMenu();
+    </script>
+</body>
+</html>
